@@ -10,7 +10,3 @@ def run(filename, equation_str):
     cli tool that solves simple polynomial equations
     """
     equation = Equation(equation_str)
-
-
-if __name__ == '__main__':
-    run()
