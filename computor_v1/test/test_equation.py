@@ -25,15 +25,22 @@ class TestEquation(unittest.TestCase):
             self.equation._extract_sides()
 
     def test_extract_parts(self):
-        self.equation = Equation('X + 4 * X^1 - 9.3 * X^2 = 1 * X^0')
+        self.equation = Equation('5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0')
         self.equation._extract_sides()
         self.equation._extract_parts()
-        # self.assertEqual(self.equation.equation,
-        #                  [(5.0, 0), (4.0, 1), (9.3, 2), (-1.0, 0)])
-        # self.equation = Equation('5 * X^0 + 4 * X^1 - 9.3 * X^ = X')
-        # self.equation._extract_sides()
-        # self.equation._extract_parts()
-        # print(self.equation.equation)
+        self.assertEqual(self.equation.equation,
+                         [(5.0, 0), (4.0, 1), (-9.3, 2), (-1, 0)])
+        self.equation = Equation('-X^0 - 4 * X^1 - 9.3 * X^ = - X')
+        self.equation._extract_sides()
+        self.equation._extract_parts()
+        self.assertEqual(self.equation.equation,
+                         [(-1, 0), (-4.0, 1), (-9.3, 1), (1, 1)])
+
+    def test_parse_equation(self):
+        self.equation = Equation('-X^0 - 4 * X^1 - 9.3 * X^ = - X')
+        self.equation.parse_equation()
+        self.assertEqual(self.equation.equation,
+                         [(-1, 0), (-4.0, 1), (-9.3, 1), (1, 1)])
 
 
 if __name__ == '__main__':

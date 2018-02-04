@@ -13,26 +13,41 @@ class Equation:
         return True
 
     def _extract_sides(self):
-        res = re.findall('^([ 0-9.X^*+-]+)=([ 0-9.X^*+-]+)$',
+        res = re.findall('^([- 0-9.X^*+]+)=([- 0-9.X^*+]+)$',
                          self.equation_str)
         if len(res) != 1 or len(res[0]) != 2:
             raise InputError()
         self.left_side_str = res[0][0].strip()
         self.right_side_str = res[0][1].strip()
 
-    def _extract_parts(self):
-        left_side_extracted = re.findall('(([0-9.]*)[ ]*\*?)?[ ]*X(\^([012]))?',
-                                        self.left_side_str)
+    @staticmethod
+    def _parse_factor(factor, sign):
+        if factor is '' and sign is '-':
+            return -1
+        elif factor is '':
+            return 1
+        elif sign is '-':
+            return -float(factor)
+        else:
+            return float(factor)
 
-        # print(left_side_extracted)
-        left_side_extracted = [(0 if item[1] is '' else float(item[1]),
-                               0 if item[3] is '' else int(item[3])) for item in
-                               left_side_extracted]
-        #
-        print(left_side_extracted)
-        # right_side_extracted = re.search('(([0-9.]*)[ ]*\*?)?[ ]*X(\^([012]))?',
-        #                                  self.right_side_str)
-        # right_side_extracted = [(-float(item[0]), int(item[1])) for item in
-        #                         right_side_extracted]
-        # self.equation.extend(left_side_extracted)
-        # self.equation.extend(right_side_extracted)
+    @staticmethod
+    def _find_all(side_str):
+        side_extracted = re.findall(
+            '(([-+]?)[ ]?([0-9.]*)[ ]*\*?)?[ ]*X(\^([012]))?',
+            side_str)
+        return [((Equation._parse_factor(item[2], item[1])),
+                1 if item[4] is '' else int(item[4])) for item in
+                side_extracted]
+
+    def _extract_parts(self):
+        left_side_extracted = Equation._find_all(self.left_side_str)
+        right_side_extracted = Equation._find_all(self.right_side_str)
+        right_side_extracted = [(-item[0], item[1]) for item in
+                                right_side_extracted]
+        self.equation.extend(left_side_extracted)
+        self.equation.extend(right_side_extracted)
+
+    def parse_equation(self):
+        self._extract_sides()
+        self._extract_parts()
