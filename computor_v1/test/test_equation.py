@@ -10,6 +10,30 @@ class TestEquation(unittest.TestCase):
         self.assertEqual(self.equation.equation_str,
                          '5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0')
 
+    def test_validate_allowed_characters(self):
+        self.equation = Equation('5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0')
+        self.assertEqual(self.equation._validate_allowed_characters(), None)
+        self.equation = Equation('5 * e^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0')
+        with self.assertRaises(InputError):
+            self.equation._validate_allowed_characters()
+
+    def test_validate_number_of_spaces(self):
+        self.equation = Equation('5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0')
+        self.assertEqual(self.equation._validate_number_of_spaces(), None)
+        self.equation = Equation('5 *  X^0 + 4 * X^1    - 9.3 * X^2 = 1 * X^0')
+        with self.assertRaises(InputError):
+            self.equation._validate_number_of_spaces()
+
+    def test_validate_factor(self):
+        self.equation = Equation('5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0')
+        self.assertEqual(self.equation._validate_factor(), None)
+        self.equation = Equation('5 * X^3 + 4 * X^1 - 9.3 * X^2 = 1 * X^5')
+        with self.assertRaises(InputError):
+            self.equation._validate_factor()
+        self.equation = Equation('5 * X^00 + 4 * X^1 - 9.3 * X^2 = 1 * X^01')
+        with self.assertRaises(InputError):
+            self.equation._validate_factor()
+
     def test_extract_sides(self):
         self.equation = Equation('5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0')
         self.equation._extract_sides()
