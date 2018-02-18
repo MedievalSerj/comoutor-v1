@@ -1,6 +1,6 @@
 import click
-from .equation import Equation
-from .errors import InputError
+from computor_v1.polynom.equation import Equation
+from computor_v1.polynom.errors import InputError
 
 
 @click.command()

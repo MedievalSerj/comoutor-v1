@@ -1,6 +1,6 @@
 import unittest
-from computor_v1.equation import Equation
-from computor_v1.errors import InputError
+from computor_v1.polynom.equation import Equation
+from computor_v1.polynom.errors import InputError
 
 
 class TestEquation(unittest.TestCase):

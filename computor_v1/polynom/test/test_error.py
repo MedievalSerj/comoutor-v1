@@ -1,5 +1,5 @@
 import unittest
-from computor_v1.errors import (
+from computor_v1.polynom.errors import (
     format_error,
     format_position_indicator
 )
