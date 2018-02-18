@@ -1,7 +1,8 @@
 import re
 from re import finditer
-from .errors import (InputError, format_error, format_position_indicator,
-                     create_error)
+
+from .errors import (InputError, create_error, format_error,
+                     format_position_indicator)
 
 
 class Equation:

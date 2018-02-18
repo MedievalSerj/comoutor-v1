@@ -1,8 +1,6 @@
 import unittest
-from computor_v1.polynom.errors import (
-    format_error,
-    format_position_indicator
-)
+
+from computor_v1.polynom.errors import format_error, format_position_indicator
 
 
 class TestError(unittest.TestCase):
