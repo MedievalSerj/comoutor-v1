@@ -3,7 +3,7 @@
 class InputError(ValueError):
 
     def __init__(self, message='Invalid argument'):
-        super().__init__(message)
+        super(InputError, self).__init__(message)
 
 
 def format_error(error_msg, *args):
