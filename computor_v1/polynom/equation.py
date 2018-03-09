@@ -44,22 +44,10 @@ class Equation:
             if groups[0]:
                 error_index.append(item.start() + 1)
 
-    def _validate_factor(self):
-        error_index = []
-        self._sub_validate_factor('\^ {0,1}([^012])?', error_index)
-        self._sub_validate_factor('\^ {0,1}([0-9]{2,})?', error_index)
-        if error_index:
-            error = create_error(
-                'Input error. Invalid factor:',
-                error_index,
-                self.equation_str
-            )
-            raise InputError(error)
-
     def validate_equation(self):
         self._validate_allowed_characters()
         self._validate_number_of_spaces()
-        self._validate_factor()
+        # self._validate_factor()
 
     def _extract_sides(self):
         res = re.findall('^([- 0-9.X^*+]+)=([- 0-9.X^*+]+)$',
