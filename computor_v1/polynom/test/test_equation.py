@@ -57,6 +57,13 @@ class TestEquation(unittest.TestCase):
         self.assertEqual(self.equation.equation,
                          [(-1, 0), (-4.0, 1), (-9.3, 1), (1, 1)])
 
+    def test_reduce(self):
+        self.equation = Equation('5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0')
+        self.equation.validate_equation()
+        self.equation.parse_equation()
+        self.equation._reduce()
+        print(f'sorted_equation: {self.equation.equation}')
+
 
 if __name__ == '__main__':
     unittest.main()

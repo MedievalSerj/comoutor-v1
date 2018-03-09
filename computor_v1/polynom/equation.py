@@ -1,5 +1,6 @@
 import re
 from re import finditer
+from functools import reduce
 
 from .errors import (InputError, create_error, format_error,
                      format_position_indicator)
@@ -11,6 +12,7 @@ class Equation:
         self.msg = 'computor: '
         self.left_side_str = None
         self.right_side_str = None
+        self.degree = 0
         self.equation = []
 
     def _validate_allowed_characters(self):
@@ -84,6 +86,15 @@ class Equation:
                                 right_side_extracted]
         self.equation.extend(left_side_extracted)
         self.equation.extend(right_side_extracted)
+
+    def _reduce(self):
+        self.equation = sorted(self.equation,
+                               key=lambda t: t[1],
+                               reverse=True)
+        self.equation = reduce(lambda x, y: [x, y]
+                               if x[1] != y[1]
+                               else [(x[0] + y[0], x[1])],
+                               self.equation)
 
     def parse_equation(self):
         self._extract_sides()
