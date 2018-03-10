@@ -22,6 +22,7 @@ def run(filename, equation_str):
     if not equation.validare_polynomial_degree():
         exit(0)
     solver = Solver(equation.equation)
+    print(solver.get_discriminant_msg())
 
 
 if __name__ == '__main__':
