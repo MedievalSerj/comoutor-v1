@@ -93,7 +93,6 @@ class TestEquation(unittest.TestCase):
         self.equation.validate_equation()
         self.equation.parse_equation()
         self.equation._reduce()
-        print(self.equation.reduced_form)
         self.assertEqual(self.equation.reduced_form,
                          '5.0 * X^0 + 4.0 * X^1 + 0 * X^2 - 1.0 * X^3 = 0')
 

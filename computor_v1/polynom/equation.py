@@ -67,7 +67,7 @@ class Equation:
         res = re.findall('^([- 0-9.X^*+]+)=([- 0-9.X^*+]+)$',
                          self.equation_str)
         if len(res) != 1 or len(res[0]) != 2:
-            raise InputError('Input error. Not a valid input file')
+            raise InputError('Input error. Not a valid input')
         self.left_side_str = res[0][0].strip()
         self.right_side_str = res[0][1].strip()
 

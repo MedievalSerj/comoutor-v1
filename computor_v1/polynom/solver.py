@@ -2,4 +2,6 @@
 
 class Solver:
 
-    pass
+    def __init__(self, equation):
+        self.equation = equation
+
