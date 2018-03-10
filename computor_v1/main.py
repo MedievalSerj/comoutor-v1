@@ -15,11 +15,12 @@ def run(filename, equation_str):
     try:
         equation.validate_equation()
         equation.parse_equation()
+        equation.print_info()
+        if not equation.validare_polynomial_degree():
+            exit(0)
     except InputError as e:
         print(str(e))
         exit(0)
-    print(equation.equation)
-    print('Done')
 
 
 if __name__ == '__main__':

@@ -55,14 +55,47 @@ class TestEquation(unittest.TestCase):
         self.equation = Equation('-X^0 - 4 * X^1 - 9.3 * X^ = - X')
         self.equation.parse_equation()
         self.assertEqual(self.equation.equation,
-                         [(-1, 0), (-4.0, 1), (-9.3, 1), (1, 1)])
+                         [(-1, 0), (-12.3, 1), (0, 2)])
 
     def test_reduce(self):
-        self.equation = Equation('5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0')
+        self.equation = Equation('5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^3')
         self.equation.validate_equation()
         self.equation.parse_equation()
         self.equation._reduce()
-        print(f'sorted_equation: {self.equation.equation}')
+        self.assertEqual(self.equation.equation,
+                         [(5, 0), (4, 1), (-9.3, 2), (-1.0, 3)])
+        self.assertEqual(self.equation.degree, 3)
+
+    def test_fix_missing_degree(self):
+        self.equation = Equation('-X^0 = 0')
+        self.equation.validate_equation()
+        self.equation.parse_equation()
+        self.assertEqual(self.equation.equation,
+                         [(-1, 0), (0, 1), (0, 2)])
+        self.equation = Equation('X^1 = 0')
+        self.equation.validate_equation()
+        self.equation.parse_equation()
+        self.assertEqual(self.equation.equation,
+                         [(0, 0), (1, 1), (0, 2)])
+        self.equation = Equation('-2X^2 = 0')
+        self.equation.validate_equation()
+        self.equation.parse_equation()
+        self.assertEqual(self.equation.equation,
+                         [(0, 0), (0, 1), (-2, 2)])
+
+    def test_get_sign(self):
+        self.assertEqual(Equation.get_sign(0, (-1, 0)), '')
+        self.assertEqual(Equation.get_sign(1, (-1, 0)), '-')
+        self.assertEqual(Equation.get_sign(1, (1, 0)), '+')
+
+    def test_reduced_form(self):
+        self.equation = Equation('5 * X^0 + 4 * X^1 = 1 * X^3')
+        self.equation.validate_equation()
+        self.equation.parse_equation()
+        self.equation._reduce()
+        print(self.equation.reduced_form)
+        self.assertEqual(self.equation.reduced_form,
+                         '5.0 * X^0 + 4.0 * X^1 + 0 * X^2 - 1.0 * X^3 = 0')
 
 
 if __name__ == '__main__':
