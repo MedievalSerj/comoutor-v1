@@ -34,6 +34,17 @@ class TestSolver(unittest.TestCase):
                          'Discriminant is negative,'
                          ' the complex solutions are:')
 
+    def test_solution(self):
+        self.solver = Solver([(-1, 0), (2, 1), (3, 2)])
+        self.assertEqual(self.solver.solution,
+                         '0.3333333333333333\n-1.0')
+        self.solver = Solver([(9, 0), (-6, 1), (1, 2)])
+        self.assertEqual(self.solver.solution, '3.0')
+        self.solver = Solver([(7, 0), (3, 1), (5, 2)])
+        self.assertEqual(self.solver.solution,
+                         '-0.3 + j1.1445523142259597'
+                         '\n-0.3 - j1.1445523142259597')
+
 
 if __name__ == '__main__':
     unittest.main()
