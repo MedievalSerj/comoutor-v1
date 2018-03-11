@@ -1,7 +1,7 @@
 import click
 
-from computor_v1.polynom.equation import Equation
-from computor_v1.polynom.errors import InputError
+from computor_v1.polynom import Equation, Solver
+from computor_v1.polynom import InputError
 
 
 @click.command()
@@ -18,8 +18,11 @@ def run(filename, equation_str):
     except InputError as e:
         print(str(e))
         exit(0)
-    print(equation.equation)
-    print('Done')
+    equation.print_info()
+    if not equation.validare_polynomial_degree():
+        exit(0)
+    solver = Solver(equation.equation)
+    print(solver.get_discriminant_msg())
 
 
 if __name__ == '__main__':
