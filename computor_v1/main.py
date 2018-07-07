@@ -24,6 +24,8 @@ def run(filename, equation_str):
         sys.exit(0)
     solver = Solver(equation.equation)
     print(solver.get_discriminant_msg())
+    s = solver.solution
+    print(s)
 
 
 if __name__ == '__main__':

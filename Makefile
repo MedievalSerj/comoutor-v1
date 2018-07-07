@@ -16,3 +16,6 @@ flake:
 test:
 	coverage run -m unittest discover $(package)
 	coverage report -m
+
+uninstall:
+	pip uninstall computor_v1 -y

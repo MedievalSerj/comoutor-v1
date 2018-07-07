@@ -38,6 +38,8 @@ class Equation:
             print("The polynomial degree is stricly "
                   "greater than 2, I can't solve.")
             return False
+        else:
+            return True
 
     def _validate_pattern(self, pattern, message):
         error_index = []
