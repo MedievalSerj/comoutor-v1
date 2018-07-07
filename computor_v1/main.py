@@ -1,4 +1,5 @@
 import click
+import sys
 
 from computor_v1.polynom import Equation, Solver
 from computor_v1.polynom import InputError
@@ -17,10 +18,10 @@ def run(filename, equation_str):
         equation.parse_equation()
     except InputError as e:
         print(str(e))
-        exit(0)
+        sys.exit(0)
     equation.print_info()
     if not equation.validare_polynomial_degree():
-        exit(0)
+        sys.exit(0)
     solver = Solver(equation.equation)
     print(solver.get_discriminant_msg())
 

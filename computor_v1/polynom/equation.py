@@ -6,7 +6,7 @@ from .errors import InputError, create_error
 
 class Equation:
     def __init__(self, equation_str):
-        self.equation_str = equation_str
+        self.equation_str = ' ' + equation_str
         self.msg = 'computor: '
         self.left_side_str = None
         self.right_side_str = None
@@ -14,8 +14,15 @@ class Equation:
         self.equation = []
 
     def validate_equation(self):
-        self._validate_allowed_characters()
-        self._validate_number_of_spaces()
+        common_msg = 'Input error. All terms should be of "a * X^p" format:'
+        self._validate_pattern('[^-0-9Xx^.+*= ]+',
+                               'Input error. Invalid characters:')
+        self._validate_pattern(' {2,}', 'Input error. To many spaces:')
+        self._validate_pattern('X(?!\^)', common_msg)
+        self._validate_pattern('(?<!x|X)\^', common_msg)
+        self._validate_pattern('(x|X)\^(?![0-9]+)', common_msg)
+        self._validate_pattern('(?i)\*(?! x|x)', common_msg)
+        self._validate_pattern('(?i)(?<![0-9] |.[0-9])\*', common_msg)
 
     def parse_equation(self):
         self._extract_sides()
@@ -28,29 +35,17 @@ class Equation:
 
     def validare_polynomial_degree(self):
         if self.degree > 2:
-            print('The polynomial degree is stricly '
-                  'greater than 2, I can t solve.')
+            print("The polynomial degree is stricly "
+                  "greater than 2, I can't solve.")
             return False
 
-    def _validate_allowed_characters(self):
+    def _validate_pattern(self, pattern, message):
         error_index = []
-        for item in finditer('[^-0-9Xx^.+*= ]+', self.equation_str):
+        for item in finditer(pattern, self.equation_str):
             error_index.append(item.start())
         if error_index:
             error = create_error(
-                'Input error. Invalid characters:',
-                error_index,
-                self.equation_str
-            )
-            raise InputError(error)
-
-    def _validate_number_of_spaces(self):
-        error_index = []
-        for item in finditer(' {2,}', self.equation_str):
-            error_index.append(item.start())
-        if error_index:
-            error = create_error(
-                'Input error. To many spaces:',
+                message,
                 error_index,
                 self.equation_str
             )
@@ -95,7 +90,7 @@ class Equation:
     def get_sign(i, item):
         if i > 0 and item[0] >= 0:
             return '+'
-        elif item[0] < 0 and i > 0:
+        elif item[0] < 0 and i >= 0:
             return '-'
         else:
             return ''
@@ -104,10 +99,12 @@ class Equation:
     def reduced_form(self):
         res = ''
         for i, item in enumerate(self.equation):
-            res += (f' {Equation.get_sign(i, item)} '
-                    f'{abs(item[0])} * X^{item[1]}')
+            n = item[0]
+            res += (f' {Equation.get_sign(i, item)}'
+                    f'{abs(n) if not n.is_integer() else int(abs(n))}'
+                    f' * X^{item[1]}')
         res += ' = 0'
-        return res[2:]
+        return res[1:]
 
     def _extract_parts(self):
         left_side_extracted = Equation._find_all(self.left_side_str)
@@ -124,9 +121,9 @@ class Equation:
 
     def _reduce(self):
         res = []
-        self._fix_missing_degre(0)
-        self._fix_missing_degre(1)
-        self._fix_missing_degre(2)
+        # self._fix_missing_degre(0)
+        # self._fix_missing_degre(1)
+        # self._fix_missing_degre(2)
         self.equation = sorted(self.equation,
                                key=lambda t: t[1])
         for i, item in enumerate(self.equation):
@@ -137,4 +134,5 @@ class Equation:
             else:
                 res[-1] = (item[0] + res[-1][0], item[1])
         self.equation = res
-        self.degree = max(self.equation, key=lambda x: x[1])[1]
+        self.degree = max(filter(lambda x: x[0] != 0, self.equation),
+                          key=lambda x: x[1])[1]
