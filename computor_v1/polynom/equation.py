@@ -121,11 +121,15 @@ class Equation:
         if degree not in degrees:
             self.equation.append((0, degree))
 
+    def fix_missing_degrees(self):
+        self._fix_missing_degre(0)
+        self._fix_missing_degre(1)
+        self._fix_missing_degre(2)
+        self.equation = sorted(self.equation,
+                               key=lambda t: t[1])
+
     def _reduce(self):
         res = []
-        # self._fix_missing_degre(0)
-        # self._fix_missing_degre(1)
-        # self._fix_missing_degre(2)
         self.equation = sorted(self.equation,
                                key=lambda t: t[1])
         for i, item in enumerate(self.equation):
@@ -136,5 +140,6 @@ class Equation:
             else:
                 res[-1] = (item[0] + res[-1][0], item[1])
         self.equation = res
-        self.degree = max(filter(lambda x: x[0] != 0, self.equation),
-                          key=lambda x: x[1])[1]
+        filtered_equation = list(filter(lambda x: x[0] != 0, self.equation))
+        if filtered_equation:
+            self.degree = max(filtered_equation, key=lambda x: x[1])[1]

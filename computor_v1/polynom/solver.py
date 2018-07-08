@@ -10,23 +10,35 @@ class Solver:
                           ' the complex solutions are:')
 
     def __init__(self, equation):
-        self.equation = equation
-        self.a = equation[2][0]
-        self.b = equation[1][0]
-        self.c = equation[0][0]
+        self.equation = equation.equation
+        self.degree = equation.degree
+        self.a = self.equation[2][0]
+        self.b = self.equation[1][0]
+        self.c = self.equation[0][0]
         self.D = self._get_discriminant()
 
-    def get_discriminant_msg(self):
+    def print_discriminant_msg(self):
+        if self.degree < 2:
+            return
         if self.D > 0:
-            return Solver.D_MESSAGE_POSITIVE
+            msg = Solver.D_MESSAGE_POSITIVE
         elif self.D == 0:
-            return Solver.D_MESSAGE_ZERO
+            msg = Solver.D_MESSAGE_ZERO
         else:
-            return Solver.D_MESSAGE_NEGATIVE
+            msg = Solver.D_MESSAGE_NEGATIVE
+        print(msg)
 
     @property
     def solution(self):
-        if self.D > 0:
+        if (self.degree == 0 and self.equation[0][0] == 0
+                and self.equation[1][0] == 0
+                and self.equation[2][0] == 0):
+            return 'All real numbers are solutions'
+        elif self.degree == 0:
+            return 'This is not even an equation'
+        elif self.degree == 1:
+            return self._solve_linear()
+        elif self.D > 0:
             solution = self._solve_positive()
             return f'{solution[0]}\n{solution[1]}'
         elif self.D == 0:
@@ -39,6 +51,9 @@ class Solver:
 
     def _get_discriminant(self):
         return self.b ** 2 - 4 * self.a * self.c
+
+    def _solve_linear(self):
+        return -self.c / self.b
 
     def _solve_positive(self):
         return ((-self.b + sqrt(self.D)) / (2 * self.a),

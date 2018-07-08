@@ -23,14 +23,14 @@ class TestSolver(unittest.TestCase):
 
     def test_print_discriminant_msg(self):
         self.solver = Solver([(-1, 0), (2, 1), (3, 2)])
-        self.assertEqual(self.solver.get_discriminant_msg(),
+        self.assertEqual(self.solver.print_discriminant_msg(),
                          'Discriminant is strictly positive,'
                          ' the two solutions are:')
         self.solver = Solver([(9, 0), (-6, 1), (1, 2)])
-        self.assertEqual(self.solver.get_discriminant_msg(),
+        self.assertEqual(self.solver.print_discriminant_msg(),
                          'Discriminant is zero, the solution is:')
         self.solver.D = -5
-        self.assertEqual(self.solver.get_discriminant_msg(),
+        self.assertEqual(self.solver.print_discriminant_msg(),
                          'Discriminant is negative,'
                          ' the complex solutions are:')
 
