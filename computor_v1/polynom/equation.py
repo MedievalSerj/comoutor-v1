@@ -18,11 +18,13 @@ class Equation:
         self._validate_pattern('[^-0-9Xx^.+*= ]+',
                                'Input error. Invalid characters:')
         self._validate_pattern(' {2,}', 'Input error. To many spaces:')
+        self._validate_pattern('\^-', 'Input error. Negative degree:')
         self._validate_pattern('X(?!\^)', common_msg)
         self._validate_pattern('(?<!x|X)\^', common_msg)
         self._validate_pattern('(x|X)\^(?![0-9]+)', common_msg)
         self._validate_pattern('(?i)\*(?! x|x)', common_msg)
         self._validate_pattern('(?i)(?<![0-9] |.[0-9])\*', common_msg)
+        self._validate_pattern('(X|x)(X|x)', common_msg)
 
     def parse_equation(self):
         self._extract_sides()
@@ -61,7 +63,7 @@ class Equation:
                 error_index.append(item.start() + 1)
 
     def _extract_sides(self):
-        res = re.findall('^([- 0-9.X^*+]+)=([- 0-9.X^*+]+)$',
+        res = re.findall('^([- 0-9.xX^*+]+)=([- 0-9.xX^*+]+)$',
                          self.equation_str)
         if len(res) != 1 or len(res[0]) != 2:
             raise InputError('Input error. Not a valid input')
@@ -82,7 +84,7 @@ class Equation:
     @staticmethod
     def _find_all(side_str):
         side_extracted = re.findall(
-            '(([-+]?)[ ]?([0-9.]*)[ ]*\*?)?[ ]*X(\^([0-9]))?',
+            '(([-+]?)[ ]?([0-9.]*)[ ]*\*?)?[ ]*X(\^([0-9]+))?',
             side_str)
         return [((Equation._parse_factor(item[2], item[1])),
                 1 if item[4] is '' else int(item[4])) for item in

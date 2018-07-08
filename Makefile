@@ -7,6 +7,9 @@ install_dev:
 install:
 	pip install .
 
+install_user:
+	pip install --user .
+
 isort:
 	isort -rc computor_v1
 

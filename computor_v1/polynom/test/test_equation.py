@@ -75,7 +75,7 @@ class TestEquation(unittest.TestCase):
         self.equation.parse_equation()
         self.equation._reduce()
         self.assertEqual(self.equation.reduced_form,
-                         ' 5.0 * X^0 + 4.0 * X^1 - 1.0 * X^3 = 0')
+                         '5 * X^0 +4 * X^1 -1 * X^3 = 0')
 
 
 if __name__ == '__main__':

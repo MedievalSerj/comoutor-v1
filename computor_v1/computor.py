@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import sys
 
 
@@ -19,12 +21,12 @@ def run(equation_str):
     equation.fix_missing_degrees()
     solver = Solver(equation)
     solver.print_discriminant_msg()
-    s = solver.solution
+    s = solver.solution()
     print(s)
 
 
 def parse_args():
-    usage = '''usage: main.py [-h] equation_str
+    usage = '''usage: computor.py [-h] equation_str
 
     positional arguments:
     equation_str  polynomial equation
