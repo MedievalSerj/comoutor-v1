@@ -67,7 +67,7 @@ class Solver:
         elif im < 0:
             im_1 = '- j' + str(abs(Solver._round_solution(im)))
             im_2 = '+ j' + str(abs(Solver._round_solution(im)))
-        return  im_1, im_2
+        return im_1, im_2
 
     def _get_discriminant(self):
         return self.b ** 2 - 4 * self.a * self.c

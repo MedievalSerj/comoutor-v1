@@ -20,7 +20,6 @@ class TestError(unittest.TestCase):
     def test_fomat_error(self):
         error_msg = 'Invalid input. to many spaces:'
         args = ('5  * X^0', ' ^      ')
-        # print(format_error(error_msg, *args))
         self.assertEqual(format_error(error_msg, *args),
                          'computor: Invalid input. to many spaces:'
                          '\n5  * X^0'

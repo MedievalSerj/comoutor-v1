@@ -2,9 +2,7 @@
 
 import sys
 
-
-from computor_v1.polynom import Equation, Solver
-from computor_v1.polynom import InputError
+from computor_v1.polynom import Equation, InputError, Solver
 
 
 def run(equation_str):
@@ -39,9 +37,13 @@ def parse_args():
     return sys.argv[1]
 
 
+def execute():
+    equation_str = parse_args()
+    run(equation_str)
+
+
 if __name__ == '__main__':
     """
     cli tool that solves simple polynomial equations
     """
-    equation_str = parse_args()
-    run(equation_str)
+    execute()

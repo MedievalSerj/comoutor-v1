@@ -21,12 +21,12 @@ setup(
     author_email=author_email,
     maintainer=author,
     maintainer_email=author_email,
+    install_requires=requirements,
     url=url,
     license='GPL',
-    install_requires=requirements,
     packages=packages,
-    test_suite='computor_v1.test',
+    test_suite='computor_v1.polynom.test',
     entry_points={
-        'console_scripts': ['computor=computor_v1.main:run'],
+        'console_scripts': ['computor=computor_v1.computor:execute'],
     }
 )
